@@ -1,0 +1,18 @@
+{
+  "name": "sool-dev",
+  "compatibility_date": "2026-10-05",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "sool.dev",
+      "custom_domain": true,
+      "previews_enabled": true
+    }
+  ],
+  "previews": {},
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}

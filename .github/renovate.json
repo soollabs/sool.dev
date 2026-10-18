@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits"
+  ],
+  "reviewers": ["soolbyte"],
+  "labels": ["dependencies"],
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{warnings}}}{{{changelogs}}}{{{controls}}}",
+  "prConcurrentLimit": 5,
+  "minimumReleaseAge": "1 day",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/deploy\\.yml$/"],
+      "matchStrings": ["wranglerVersion:\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "wrangler",
+      "datasourceTemplate": "npm"
+    }
+  ]
+}
