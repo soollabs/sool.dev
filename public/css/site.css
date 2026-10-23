@@ -132,6 +132,23 @@ a.chip:hover { color: var(--g); border-color: var(--g); }
 @keyframes sweep { to { transform: translateX(170%); } }
 @keyframes sweep-again { from { transform: translateX(-100%); } to { transform: translateX(170%); } }
 
+/* Shiny card: with a mouse, site.js tilts the screenshot towards the pointer
+   (--rx, --ry) and a glare and foil band follow it (--mx, --my). It replaces
+   the hover sweep and settles back flat when the pointer leaves. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .js .shot { transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+  .js .shot.shiny { transition-duration: .1s; }
+  .js .shot::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .4s;
+    background:
+      radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(228 236 229 / 0.154), rgb(50 249 78 / 0.056) 30%, transparent 60%),
+      linear-gradient(115deg, transparent calc(var(--mx, 50%) - 30%), rgb(50 249 78 / 0.07) calc(var(--mx, 50%) - 8%), rgb(228 236 229 / 0.098) var(--mx, 50%), rgb(50 249 78 / 0.07) calc(var(--mx, 50%) + 8%), transparent calc(var(--mx, 50%) + 30%));
+    mix-blend-mode: screen;
+  }
+  .js .shot.shiny::before { opacity: 1; }
+  .js .card:hover .shot::after { animation: sweep 1.3s cubic-bezier(.4, 0, .2, 1) 1.2s both; }
+}
+
 /* Terminal-ish panels (feed, shell) ----------------------------- */
 .term { border: 1px solid var(--line-2); background: #000; font-family: var(--mono); }
 .term-bar {

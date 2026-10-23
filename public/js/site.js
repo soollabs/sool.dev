@@ -146,6 +146,34 @@
     return li;
   }
 
+  // Shiny card ----------------------------------------------------------
+  // With a mouse, a project screenshot leans towards the pointer and its
+  // sheen follows it, like a shiny trading card. The CSS turns it off for
+  // reduced motion.
+  $$(".shot").forEach((shot) => {
+    const able = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+    let frame = 0;
+    shot.addEventListener("pointermove", (e) => {
+      if (!able.matches) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const r = shot.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        shot.classList.add("shiny");
+        shot.style.setProperty("--ry", `${((x - 0.5) * 10).toFixed(2)}deg`);
+        shot.style.setProperty("--rx", `${((0.5 - y) * 7).toFixed(2)}deg`);
+        shot.style.setProperty("--mx", `${(x * 100).toFixed(1)}%`);
+        shot.style.setProperty("--my", `${(y * 100).toFixed(1)}%`);
+      });
+    });
+    shot.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(frame);
+      shot.classList.remove("shiny");
+      shot.style.removeProperty("--rx");
+      shot.style.removeProperty("--ry");
+    });
+  });
+
   // Lab shell -----------------------------------------------------------
   const shell = $(".shell");
   if (!shell) return;
